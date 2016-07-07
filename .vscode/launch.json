@@ -6,7 +6,7 @@
             "type": "phantomjs",
             "request": "launch",
             "file": "${workspaceRoot}/app.js",
-            "runtimeExecutable": "${workspaceRoot}/phantomjs.exe",
+            "runtimeExecutable": "E:/tools/phantomjs-2.1.1-windows/bin/phantomjs.exe",
             "runtimeArgs": [],
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}",
