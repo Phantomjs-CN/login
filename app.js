@@ -4,11 +4,11 @@
 var page = require('webpage').create();
 
 
-page.open('http://panli.com', function(status) {
+page.open('https://www.taobao.com/', function(status) {
     console.log("Status2: " + status);
     if (status === "success") {
 
-        //page.render('./images/panli.png'); //生成渲染后的界面图片
+        page.render('./images/taobao.png'); //生成渲染后的界面图片
     }
 
     var info = page.evaluate(function() {
