@@ -264,6 +264,91 @@ page.open('https://www.taobao.com', function() {
 由于是异步加载，所以 `phantom.exit()` 语句要放在 
 `page.includeJs()` 方法的回调函数之中，否则页面会过早退出。
 
+#### render()
+
+`render` 方法用于将网页保存成图片，参数就是指定的文件名。
+该方法根据后缀名，将网页保存成不同的格式，目前支持 `PNG`、GIF、JPEG和PDF。
+
+```js
+var webPage = require('webpage');
+var page = webPage.create();
+
+page.viewportSize = { width: 1920, height: 1080 };
+page.open("http://www.taobao.com", function start(status) {
+  page.render('taobao_home.jpeg', {format: 'jpeg', quality: '100'});
+  phantom.exit();
+});
+```
+
+
+该方法还可以接受一个配置对象，`format` 字段用于指定图片格式，
+`quality` 字段用于指定图片质量，最小为0，最大为100。
+
+
+#### viewportSize-zoomFactor
+
+`viewportSize` 属性指定浏览器视口的大小，即网页加载的初始浏览器窗口大小。
+
+```js
+var webPage = require('webpage');
+var page = webPage.create();
+
+page.viewportSize = {
+  width: 480,
+  height: 800
+};
+```
+
+`viewportSize` 的 `Height` 字段必须指定，不可省略。
+
+`zoomFactor` 属性用来指定渲染时
+（ `render` 方法和 renderBase64 方法）页面的放大系数，默认是1（即100%）。
+
+```js
+var webPage = require('webpage');
+var page = webPage.create();
+
+page.zoomFactor = 0.25;
+page.render('capture.png');
+```
+
+
+#### onResourceRequested
+
+`onResourceRequested` 属性用来指定一个回调函数，
+当页面请求一个资源时，会触发这个回调函数。
+它的第一个参数是 HTTP 请求的元数据对象，第二个参数是发出的网络请求对象。
+
+HTTP请求包括以下字段。
+
+> id：所请求资源的编号
+
+> method：使用的HTTP方法
+
+> url：所请求的资源 URL
+
+> time：一个包含请求时间的Date对象
+
+> headers：HTTP头信息数组
+
+
+网络请求对象包含以下方法。
+
+> abort()：终止当前的网络请求，这会导致调用onResourceError回调函数。
+
+> changeUrl(newUrl)：改变当前网络请求的URL。
+
+> setHeader(key, value)：设置HTTP头信息。
+
+ 
+```js
+var webPage = require('webpage');
+var page = webPage.create();
+
+page.onResourceRequested = function(requestData, networkRequest) {
+  console.log('Request (#' + requestData.id + '): ' + JSON.stringify(requestData));
+};
+```
 
 
 
