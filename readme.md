@@ -350,6 +350,102 @@ page.onResourceRequested = function(requestData, networkRequest) {
 };
 ```
 
+#### onResourceReceived
+
+`onResourceReceived` 属性用于指定一个回调函数，
+当网页收到所请求的资源时，就会执行该回调函数。它的参数就是服务器发来的HTTP回应的元数据对象，包括以下字段。
+
+> id：所请求的资源编号
+> url：所请求的资源的URL r- time：包含HTTP回应时间的Date对象
+> headers：HTTP头信息数组
+> bodySize：解压缩后的收到的内容大小
+> contentType：接到的内容种类
+> redirectURL：重定向URL（如果有的话）
+> stage：对于多数据块的HTTP回应，头一个数据块为start，最后一个数据块为end。
+> status：HTTP状态码，成功时为200。
+> statusText：HTTP状态信息，比如OK。
+
+如果HTTP回应非常大，分成多个数据块发送，`onResourceReceived` 会在收到每个数据块时触发回调函数。
+
+```js
+var webPage = require('webpage');
+var page = webPage.create();
+
+page.onResourceReceived = function(response) {
+  console.log('Response (#' + response.id + ', stage "' + response.stage + '"): ' + JSON.stringify(response));
+};
+```
+
+### system模块
+
+`system` 模块可以加载操作系统变量，`system.args` 就是参数数组。
+
+```js
+var page = require('webpage').create(),
+    system = require('system'),
+    t, address;
+
+// 如果命令行没有给出网址
+if (system.args.length === 1) {
+    console.log('Usage: page.js <some URL>');
+    phantom.exit();
+}
+
+t = Date.now();
+address = system.args[1];
+page.open(address, function (status) {
+    if (status !== 'success') {
+        console.log('FAIL to load the address');
+    } else {
+        t = Date.now() - t;
+        console.log('Loading time ' + t + ' ms');
+    }
+    phantom.exit();
+});
+```
+
+使用方法如下：
+
+```
+$ phantomjs page.js http://www.taobao.com
+```
+
+
+### 应用
+
+Phantomjs可以实现多种应用。
+
+#### 过滤资源
+
+
+处理页面的时候，有时不希望加载某些特定资源。
+这时，可以对URL进行匹配，一旦符合规则，就中断对资源的连接。
+
+```js
+page.onResourceRequested = function(requestData, request) {
+  if ((/http:\/\/.+?\.css$/gi).test(requestData['url'])) {
+    console.log('Skipping', requestData['url']);
+    request.abort();
+  }   
+};
+```
+
+上面代码一旦发现加载的资源是CSS文件，就会使用 `request.abort` 方法中断连接。
+
+
+
+#### 截图
+
+最简单的生成网页截图的方法如下。
+
+```js
+var page = require('webpage').create();
+page.open('http://taobao.com', function () {
+    page.render('toabao.png');
+    phantom.exit();
+});
+
+```
 
 
 ## License
