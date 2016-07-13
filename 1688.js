@@ -8,25 +8,39 @@ function evaluate(page, func) {
 }
 
 
+var u168 = 'https://login.1688.com/member/signin.htm?spm=a260k.635.1999448331.3.EwDpAt&Done=https%3A%2F%2Fwww.taobao.com%2F';
+
+var backUrl = 'https://www.taobao.com/';
+
+// u168 = u168 + backUrl;
+
+
+
+
 
 var args = require('system').args;
 var page = require('webpage').create();
 
 var data = {
     email: args[1],
-    password: args[2],
+    password: args[2]
 };
 
-page.open("http://github.panli.com/", function(status) {
+page.open(u168, function(status) {
     if (status === "success") {
+
+
+
+
+
         page.onConsoleMessage = function(msg, lineNum, sourceId) {
             console.log('CONSOLE: ' + msg);
         };
-
+        console.log(data);
         evaluate(page, function(data) {
-            document.getElementById("user_name").value = data.email;
-            document.getElementById("password").value = data.password;
-            document.getElementsByClassName("green")[0].click();
+            document.getElementById("TPL_username_1").value = data.email;
+            document.getElementById("TPL_password_1").value = data.password;
+            document.getElementById("J_SubmitStatic").click();
             console.log('Just entered Panli git info' + data);
         }, data);
 
@@ -34,17 +48,10 @@ page.open("http://github.panli.com/", function(status) {
         setTimeout(function() {
             var cookies = page.cookies;
 
-
-            for (var i in cookies) {
-                console.log(i + '****' + cookies[i].name + '=' + cookies[i].value + '*****domain ==' + cookies[i].domain);
-            }
-
             console.log(JSON.stringify(cookies));
-            console.log(page.title); // get page Title
 
             phantom.exit()
-        }, 3000)
-
+        }, 1000)
 
     }
 });
