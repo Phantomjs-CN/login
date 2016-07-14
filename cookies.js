@@ -1,12 +1,23 @@
 var webPage = require('webpage');
 var page = webPage.create();
 
-page.open('https://www.taobao.com', function(status) {
+
+
+var system = require('system');
+
+var args = system.args;
+
+page.open('https://m.taobao.com', function(status) {
 
     setTimeout(function() {
 
 
         var cookies = page.cookies;
+
+        // window.localStorage
+
+
+        console.log(JSON.stringify(localStorage));
 
         // console.log(JSON.stringify(cookies));
 
@@ -15,6 +26,6 @@ page.open('https://www.taobao.com', function(status) {
         }
         phantom.exit();
 
-    }, 5000)
+    }, 2000)
 
 });

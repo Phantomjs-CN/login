@@ -16,7 +16,7 @@ var casper = require('casper').create({
 // var args = require('system').args;
 
 var data = {
-    name: "恬恬西瓜",
+    name: args[1],
     password: "apily7q8w9epanli",
 };
 
