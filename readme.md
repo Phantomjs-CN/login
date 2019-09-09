@@ -1,5 +1,7 @@
 ## PhantomJS 模拟登陆
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/zanjs/login.svg)](https://greenkeeper.io/)
+
 
 
 ## 目录
