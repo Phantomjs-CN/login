@@ -8,7 +8,7 @@
     "babel-core": "^6.10.4",
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
-    "phantom": "^2.1.11",
+    "phantom": "^6.3.0",
     "spooky": "^0.2.5"
   },
   "devDependencies": {},
